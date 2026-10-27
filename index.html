@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Experiments</title>
+<style>
+:root{--bg:#f4f7fb;--panel:#fff;--ink:#172033;--muted:#64748b;--accent:#3157d5;--line:#e2e8f0;--code:#101827}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+.layout{max-width:1200px;margin:22px auto;padding:0 16px;display:grid;grid-template-columns:280px minmax(0,1fr);gap:18px}
+.sidebar,.content{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 24px #0f172a08}
+.sidebar{padding:14px;height:fit-content;position:sticky;top:12px}.sidebar h2{font-size:14px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:4px 8px 10px}
+.nav{display:flex;flex-direction:column;gap:5px}.nav button{width:100%;text-align:left;background:transparent;color:var(--ink);border:0;border-radius:9px;padding:10px;cursor:pointer;font:inherit}
+.nav button:hover{background:#eff6ff}.nav button.active{background:#e8efff;color:#1d3eaa;font-weight:700}.num{display:inline-grid;place-items:center;width:27px;height:27px;border-radius:8px;background:#e2e8f0;margin-right:8px;font-size:12px}.active .num{background:var(--accent);color:white}
+.content{padding:clamp(16px,3vw,30px);min-width:0}.eyebrow{color:var(--accent);font-weight:800;text-transform:uppercase;font-size:12px;letter-spacing:.1em}
+h2{line-height:1.2}.content h2{font-size:clamp(23px,3vw,32px);margin:7px 0 12px}.chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 22px}.chip{font-size:12px;padding:5px 9px;border-radius:99px;background:#edf2ff;color:#2945a5;font-weight:700}
+section{margin-top:22px}section h3{margin:0 0 8px;font-size:17px}.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.info{background:#f8fafc;border:1px solid var(--line);border-radius:11px;padding:13px}.info p{margin:0;color:#334155}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:10px 0}.toolbar-left{display:flex;gap:8px;flex-wrap:wrap}.action{border:1px solid #cbd5e1;border-radius:9px;padding:9px 12px;background:white;cursor:pointer;font-weight:700;color:#1e293b}.action.primary{background:var(--accent);color:white;border-color:var(--accent)}.action:hover{filter:brightness(.97)}.codewrap{position:relative;background:var(--code);border-radius:12px;overflow:hidden}.codehead{display:flex;justify-content:space-between;align-items:center;color:#cbd5e1;background:#1e293b;padding:9px 13px;font-size:12px}.codewrap pre{margin:0;padding:18px;overflow:auto;max-height:580px;color:#e5edf9;font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;tab-size:2}.note{font-size:13px;color:var(--muted)}.status{min-height:20px;color:#166534;font-size:13px}.footer{max-width:1200px;margin:0 auto;padding:0 18px 24px;color:var(--muted);font-size:13px}
+@media(max-width:800px){.layout{grid-template-columns:1fr}.sidebar{position:static}.nav{display:grid;grid-template-columns:1fr 1fr}.info-grid{grid-template-columns:1fr}}
+@media(max-width:440px){.nav{grid-template-columns:1fr}.content{padding:16px}.toolbar{align-items:flex-start}.action{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar"><h2>Experiment index</h2><nav id="nav" class="nav" aria-label="Experiments"></nav></aside>
+<main id="content" class="content" aria-live="polite"></main>
+</div>
+<div class="footer">Tip: use the menu to switch experiments. Browser examples run by opening the HTML file; Node.js and React examples need the setup steps shown for each experiment.</div>
+<script>
+const experiments = [{"id": 1, "title": "Responsive Registration Form", "language": "HTML + CSS", "libs": "Web browser; no external library", "aim": "To design a responsive student registration form using HTML and CSS.", "theory": "HTML creates the form fields and labels. CSS styles the form and media queries make it adapt to mobile and desktop screens.", "setup": "Save as index.html and open it in Chrome, Edge, or Firefox. For live preview, use VS Code with the Live Server extension or an online HTML editor.", "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>Student Registration<\/title>\n  <style>\n    * { box-sizing: border-box; }\n    body { font-family: Arial, sans-serif; background: #eef2ff; margin: 0; padding: 24px; }\n    .form-card { max-width: 520px; margin: auto; background: white; padding: 24px; border-radius: 14px; box-shadow: 0 8px 24px #0001; }\n    h1 { text-align: center; color: #253b80; }\n    label { display: block; margin-top: 14px; font-weight: bold; }\n    input, select, textarea, button { width: 100%; padding: 11px; margin-top: 6px; border: 1px solid #cbd5e1; border-radius: 7px; font: inherit; }\n    button { background: #3347a9; color: white; border: 0; cursor: pointer; margin-top: 20px; }\n    button:hover { background: #243584; }\n    @media (max-width: 480px) { body { padding: 12px; } .form-card { padding: 16px; } }\n  <\/style>\n<\/head>\n<body>\n  <main class=\"form-card\">\n    <h1>Student Registration<\/h1>\n    <form id=\"registration\">\n      <label for=\"name\">Full name<\/label><input id=\"name\" name=\"name\" required>\n      <label for=\"email\">Email<\/label><input id=\"email\" name=\"email\" type=\"email\" required>\n      <label for=\"phone\">Phone number<\/label><input id=\"phone\" name=\"phone\" type=\"tel\" required>\n      <label for=\"course\">Course<\/label>\n      <select id=\"course\" name=\"course\" required>\n        <option value=\"\">Choose a course<\/option><option>Computer Engineering<\/option><option>Information Technology<\/option><option>AI & Data Science<\/option>\n      <\/select>\n      <label for=\"message\">Address<\/label><textarea id=\"message\" rows=\"3\"><\/textarea>\n      <button type=\"submit\">Register<\/button>\n    <\/form>\n    <p id=\"result\" role=\"status\"><\/p>\n  <\/main>\n  <script>\n    document.querySelector(\"#registration\").addEventListener(\"submit\", function(event) {\n      event.preventDefault();\n      document.querySelector(\"#result\").textContent =\n        \"Registration form submitted for \" + document.querySelector(\"#name\").value + \".\";\n    });\n  <\/script>\n<\/body>\n<\/html>"}, {"id": 2, "title": "Web App Using Arrow Functions", "language": "JavaScript", "libs": "Browser JavaScript; no external library", "aim": "To develop a simple web application using JavaScript arrow functions.", "theory": "Arrow functions provide a short syntax for writing functions. They are useful for event handlers, callbacks, and small calculations.", "setup": "Save as index.html and open in a browser. The HTML page includes the JavaScript, so no installation is required.", "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Arrow Function Demo<\/title><\/head>\n<body>\n  <h1>Arrow Function Calculator<\/h1>\n  <input id=\"a\" type=\"number\" placeholder=\"First number\">\n  <input id=\"b\" type=\"number\" placeholder=\"Second number\">\n  <button id=\"add\">Add numbers<\/button>\n  <p id=\"output\">Result appears here.<\/p>\n  <script>\n    const add = (x, y) => Number(x) + Number(y);\n    document.querySelector(\"#add\").addEventListener(\"click\", () => {\n      const x = document.querySelector(\"#a\").value;\n      const y = document.querySelector(\"#b\").value;\n      document.querySelector(\"#output\").textContent = \"Sum = \" + add(x, y);\n    });\n  <\/script>\n<\/body>\n<\/html>"}, {"id": 3, "title": "Popup Boxes in JavaScript", "language": "HTML + JavaScript", "libs": "Web browser; no external library", "aim": "To demonstrate alert, confirm, and prompt popup boxes in JavaScript.", "theory": "alert() displays a message, confirm() asks the user to choose OK or Cancel, and prompt() accepts text input from the user.", "setup": "Save as index.html and open it in a browser. Click each button to see the relevant popup.", "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Popup Boxes<\/title><\/head>\n<body>\n  <h1>JavaScript Popup Boxes<\/h1>\n  <button onclick=\"showAlert()\">Alert<\/button>\n  <button onclick=\"showConfirm()\">Confirm<\/button>\n  <button onclick=\"showPrompt()\">Prompt<\/button>\n  <p id=\"result\"><\/p>\n  <script>\n    function showAlert() {\n      alert(\"Welcome to JavaScript!\");\n    }\n    function showConfirm() {\n      const answer = confirm(\"Do you want to continue?\");\n      document.querySelector(\"#result\").textContent = answer ? \"You selected OK.\" : \"You selected Cancel.\";\n    }\n    function showPrompt() {\n      const name = prompt(\"Enter your name:\");\n      document.querySelector(\"#result\").textContent =\n        name === null ? \"Prompt cancelled.\" : \"Hello, \" + name + \"!\";\n    }\n  <\/script>\n<\/body>\n<\/html>"}, {"id": 4, "title": "Props and State in React JS", "language": "React JSX", "libs": "Node.js LTS, npm, React, React DOM, Vite", "aim": "To demonstrate props and state in a React JS application.", "theory": "Props pass data from a parent component to a child component. State stores data that can change; updating state causes React to render the component again.", "setup": "Install Node.js LTS. Run: npm create vite@latest props-state-demo -- --template react ; cd props-state-demo ; npm install ; replace src/App.jsx with the code below ; npm run dev.", "code": "import { useState } from \"react\";\nimport \"./App.css\";\n\nfunction Greeting({ name }) {\n  return <h2>Hello, {name}!<\/h2>; // name is a prop\n}\n\nexport default function App() {\n  const [count, setCount] = useState(0); // count is state\n\n  return (\n    <main style={{ fontFamily: \"Arial\", padding: 24 }}>\n      <h1>React Props and State<\/h1>\n      <Greeting name=\"Vedang\" />\n      <p>Button clicked: {count} times<\/p>\n      <button onClick={() => setCount(count + 1)}>Increment<\/button>\n    <\/main>\n  );\n}"}, {"id": 5, "title": "Install and Set Up MongoDB", "language": "MongoDB / mongosh", "libs": "MongoDB Community Server and MongoDB Shell (mongosh)", "aim": "To install and configure MongoDB and perform basic database operations.", "theory": "MongoDB is a NoSQL document database. It stores records as BSON documents in collections, which are similar to rows and tables in relational databases.", "setup": "Install MongoDB Community Server and MongoDB Shell from the official MongoDB website, start the MongoDB service, then open mongosh. Alternatively, use MongoDB Atlas in a browser and connect with its provided connection string.", "code": "// Run these commands inside mongosh\n\n// 1. Create or switch to a database\nuse collegeDB\n\n// 2. Create a collection and insert documents\ndb.students.insertMany([\n  { name: \"Asha\", age: 20, course: \"Computer Engineering\" },\n  { name: \"Rahul\", age: 21, course: \"Information Technology\" }\n])\n\n// 3. Display all documents\ndb.students.find()\n\n// 4. Find one student\ndb.students.findOne({ name: \"Asha\" })\n\n// 5. Update a document\ndb.students.updateOne(\n  { name: \"Asha\" },\n  { $set: { age: 21 } }\n)\n\n// 6. Delete a document\ndb.students.deleteOne({ name: \"Rahul\" })\n\n// 7. Verify remaining documents\ndb.students.find()"}, {"id": 6, "title": "Basic Web App Using Callbacks", "language": "JavaScript", "libs": "Browser JavaScript; no external library", "aim": "To develop a basic web application that demonstrates callback functions.", "theory": "A callback is a function passed as an argument to another function and called later. Callbacks are commonly used for events and asynchronous tasks.", "setup": "Save as index.html and open it in a browser. Click the button to trigger a simulated asynchronous operation.", "code": "<!DOCTYPE html>\n<html lang=\"en\">\n<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Callback Demo<\/title><\/head>\n<body>\n  <h1>Callback Function Demo<\/h1>\n  <button id=\"load\">Load message<\/button>\n  <p id=\"status\">Click the button to begin.<\/p>\n  <script>\n    const getMessage = (callback) => {\n      document.querySelector(\"#status\").textContent = \"Loading...\";\n      setTimeout(() => callback(\"Data loaded successfully!\"), 1000);\n    };\n\n    document.querySelector(\"#load\").addEventListener(\"click\", () => {\n      getMessage((message) => {\n        document.querySelector(\"#status\").textContent = message;\n      });\n    });\n  <\/script>\n<\/body>\n<\/html>"}, {"id": 7, "title": "Create an HTTP Server Using Node.js", "language": "JavaScript / Node.js", "libs": "Node.js built-in http module; no npm package required", "aim": "To create and run a basic HTTP server using Node.js.", "theory": "Node.js allows JavaScript to run outside the browser. The built-in http module can create a server that listens for requests and sends responses.", "setup": "Install Node.js LTS. Save the code as server.js. Run `node server.js` in a terminal, then open http://localhost:3000 in your browser. Stop the server with Ctrl+C.", "code": "const http = require(\"http\");\n\nconst server = http.createServer((req, res) => {\n  res.writeHead(200, { \"Content-Type\": \"text/html; charset=utf-8\" });\n  res.end(\"<h1>Hello from a Node.js HTTP server!<\/h1><p>Server is running.<\/p>\");\n});\n\nconst PORT = 3000;\nserver.listen(PORT, () => {\n  console.log(`Server running at http://localhost:${PORT}`);\n});"}, {"id": 8, "title": "Arithmetic Operations in Node.js REPL", "language": "JavaScript / Node.js REPL", "libs": "Node.js; no external package required", "aim": "To perform arithmetic operations using the Node.js Read-Eval-Print Loop (REPL).", "theory": "The Node.js REPL is an interactive environment that reads an expression, evaluates it, prints the result, and waits for the next command.", "setup": "Install Node.js. Open Terminal or Command Prompt and type `node` to enter the REPL. Type expressions directly; exit with `.exit` or Ctrl+C twice.", "code": "// Type these one by one inside the Node.js REPL\n\n10 + 5\n// 15\n\n10 - 5\n// 5\n\n10 * 5\n// 50\n\n10 / 5\n// 2\n\n10 % 3\n// 1 (remainder)\n\n2 ** 3\n// 8 (power)\n\n// Variables also work in the REPL\nconst a = 20\nconst b = 6\na + b\n// 26\na - b\n// 14\na * b\n// 120\na / b\n// 3.3333333333333335"}, {"id": 9, "title": "File System, Buffers and Streams", "language": "JavaScript / Node.js", "libs": "Node.js built-in fs and stream modules; no npm package required", "aim": "To demonstrate file operations, Buffer handling, and streams in Node.js.", "theory": "The fs module reads and writes files. A Buffer stores binary data. Streams process data in chunks, which can be more memory-efficient for large files.", "setup": "Install Node.js and save as file-demo.js. Run `node file-demo.js` in the terminal. The program creates sample.txt and then reads it using a stream.", "code": "const fs = require(\"fs\");\nconst { Buffer } = require(\"buffer\");\n\n// 1. Write a file\nfs.writeFileSync(\"sample.txt\", \"Hello from Node.js!\\nThis file demonstrates streams.\");\n\n// 2. Read the file\nconst content = fs.readFileSync(\"sample.txt\", \"utf8\");\nconsole.log(\"File content:\\n\" + content);\n\n// 3. Create and inspect a Buffer\nconst data = Buffer.from(\"Hello\");\nconsole.log(\"Buffer:\", data);\nconsole.log(\"Buffer as text:\", data.toString());\n\n// 4. Read the file using a stream\nconst readStream = fs.createReadStream(\"sample.txt\", { encoding: \"utf8\" });\nconsole.log(\"Stream output:\");\nreadStream.on(\"data\", (chunk) => console.log(chunk));\nreadStream.on(\"error\", (error) => console.error(\"Read error:\", error.message));"}, {"id": 10, "title": "Web REST API Using Express", "language": "JavaScript / Node.js", "libs": "Node.js LTS, Express (`npm install express`)", "aim": "To develop a simple REST API using Express.js.", "theory": "Express is a Node.js web framework. A REST API exposes resources through HTTP methods such as GET, POST, PUT, and DELETE.", "setup": "Create a folder, run `npm init -y`, then `npm install express`. Save as server.js and run `node server.js`. Test endpoints with a browser or Postman at http://localhost:3000/api/students.", "code": "const express = require(\"express\");\nconst app = express();\nconst PORT = 3000;\n\napp.use(express.json());\n\nlet students = [\n  { id: 1, name: \"Asha\" },\n  { id: 2, name: \"Rahul\" }\n];\n\n// Read all students\napp.get(\"/api/students\", (req, res) => {\n  res.json(students);\n});\n\n// Read one student\napp.get(\"/api/students/:id\", (req, res) => {\n  const student = students.find(s => s.id === Number(req.params.id));\n  if (!student) return res.status(404).json({ error: \"Student not found\" });\n  res.json(student);\n});\n\n// Create a student\napp.post(\"/api/students\", (req, res) => {\n  const { name } = req.body;\n  if (!name) return res.status(400).json({ error: \"Name is required\" });\n  const student = { id: Date.now(), name };\n  students.push(student);\n  res.status(201).json(student);\n});\n\n// Delete a student\napp.delete(\"/api/students/:id\", (req, res) => {\n  const id = Number(req.params.id);\n  const before = students.length;\n  students = students.filter(s => s.id !== id);\n  if (students.length === before) return res.status(404).json({ error: \"Student not found\" });\n  res.json({ message: \"Student deleted\" });\n});\n\napp.listen(PORT, () => {\n  console.log(`REST API running at http://localhost:${PORT}`);\n});"}];
+const nav = document.getElementById("nav");
+const content = document.getElementById("content");
+let current = 1;
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, ch => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  })[ch]);
+}
+function renderNav() {
+  nav.innerHTML = experiments.map(exp => `
+    <button type="button" data-id="${exp.id}" class="${exp.id === current ? "active" : ""}">
+      <span class="num">${String(exp.id).padStart(2,"0")}</span>${escapeHTML(exp.title)}
+    </button>`).join("");
+  nav.querySelectorAll("button").forEach(button => {
+    button.addEventListener("click", () => {
+      current = Number(button.dataset.id);
+      renderNav();
+      renderExperiment();
+    });
+  });
+}
+function renderExperiment() {
+  const exp = experiments.find(item => item.id === current);
+  content.innerHTML = `
+    <div class="eyebrow">Experiment ${String(exp.id).padStart(2,"0")} of 10</div>
+    <h2>${escapeHTML(exp.title)}</h2>
+    <div class="chips"><span class="chip">${escapeHTML(exp.language)}</span><span class="chip">Practical-ready</span></div>
+    <section><h3>Aim</h3><p>${escapeHTML(exp.aim)}</p></section>
+    <section><h3>Theory</h3><p>${escapeHTML(exp.theory)}</p></section>
+    <section class="info-grid">
+      <div class="info"><h3>Libraries / Requirements</h3><p>${escapeHTML(exp.libs)}</p></div>
+      <div class="info"><h3>How to run</h3><p>${escapeHTML(exp.setup)}</p></div>
+    </section>
+    <section>
+      <div class="toolbar"><h3 style="margin:0">Program / Code</h3><div class="toolbar-left">
+        <button class="action primary" id="copyBtn" type="button">Copy code</button>
+        <button class="action" id="downloadBtn" type="button">Download code</button>
+      </div></div>
+      <div class="codewrap"><div class="codehead"><span>${escapeHTML(exp.language)}</span><span>${exp.code.split("\\n").length} lines</span></div><pre><code id="codeText">${escapeHTML(exp.code)}</code></pre></div>
+      <p class="status" id="status" role="status"></p>
+      <p class="note">Copy uses the Clipboard API when available and falls back to a selectable code box if browser permissions block copying.</p>
+    </section>`;
+  document.getElementById("copyBtn").addEventListener("click", copyCode);
+  document.getElementById("downloadBtn").addEventListener("click", downloadCode);
+}
+async function copyCode() {
+  const exp = experiments.find(item => item.id === current);
+  const status = document.getElementById("status");
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(exp.code);
+      status.textContent = "Code copied to clipboard.";
+      return;
+    }
+  } catch (err) {}
+  // Fallback: select code so Ctrl+C works even when clipboard access is blocked.
+  const code = document.getElementById("codeText");
+  const range = document.createRange();
+  range.selectNodeContents(code);
+  const selection = window.getSelection();
+  selection.removeAllRanges();
+  selection.addRange(range);
+  status.textContent = "Code selected. Press Ctrl+C (Windows/Linux) or Cmd+C (Mac) to copy.";
+}
+function downloadCode() {
+  const exp = experiments.find(item => item.id === current);
+  const ext = exp.id === 1 || exp.id === 2 || exp.id === 3 || exp.id === 6 ? "html" :
+    exp.id === 4 ? "jsx" : exp.id === 5 ? "js" : "js";
+  const filename = `experiment-${String(exp.id).padStart(2,"0")}-${exp.title.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")}.${ext}`;
+  const blob = new Blob([exp.code], {type:"text/plain;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url; link.download = filename;
+  document.body.appendChild(link); link.click(); link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  document.getElementById("status").textContent = "Download started: " + filename;
+}
+renderNav();
+renderExperiment();
+</script>
+</body>
+</html>
