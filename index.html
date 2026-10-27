@@ -15,6 +15,7 @@
 .content{padding:clamp(16px,3vw,30px);min-width:0}.eyebrow{color:var(--accent);font-weight:800;text-transform:uppercase;font-size:12px;letter-spacing:.1em}
 h2{line-height:1.2}.content h2{font-size:clamp(23px,3vw,32px);margin:7px 0 12px}.chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 22px}.chip{font-size:12px;padding:5px 9px;border-radius:99px;background:#edf2ff;color:#2945a5;font-weight:700}
 section{margin-top:22px}section h3{margin:0 0 8px;font-size:17px}.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.info{background:#f8fafc;border:1px solid var(--line);border-radius:11px;padding:13px}.info p{margin:0;color:#334155}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:10px 0}.toolbar-left{display:flex;gap:8px;flex-wrap:wrap}.action{border:1px solid #cbd5e1;border-radius:9px;padding:9px 12px;background:white;cursor:pointer;font-weight:700;color:#1e293b}.action.primary{background:var(--accent);color:white;border-color:var(--accent)}.action:hover{filter:brightness(.97)}.codewrap{position:relative;background:var(--code);border-radius:12px;overflow:hidden}.codehead{display:flex;justify-content:space-between;align-items:center;color:#cbd5e1;background:#1e293b;padding:9px 13px;font-size:12px}.codewrap pre{margin:0;padding:18px;overflow:auto;max-height:580px;color:#e5edf9;font:13px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;tab-size:2}.note{font-size:13px;color:var(--muted)}.status{min-height:20px;color:#166534;font-size:13px}.footer{max-width:1200px;margin:0 auto;padding:0 18px 24px;color:var(--muted);font-size:13px}
+.runner{margin-top:16px;border:1px solid var(--line);border-radius:10px;overflow:hidden}.runner-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 12px;background:#f8fafc}.runner-head h3{margin:0}.runner iframe{display:block;width:100%;height:420px;border:0;background:#fff}
 @media(max-width:800px){.layout{grid-template-columns:1fr}.sidebar{position:static}.nav{display:grid;grid-template-columns:1fr 1fr}.info-grid{grid-template-columns:1fr}}
 @media(max-width:440px){.nav{grid-template-columns:1fr}.content{padding:16px}.toolbar{align-items:flex-start}.action{font-size:13px}}
 </style>
@@ -51,6 +52,7 @@ function renderNav() {
 }
 function renderExperiment() {
   const exp = experiments.find(item => item.id === current);
+  const canRunInBrowser = [1, 2, 3, 6].includes(exp.id);
   content.innerHTML = `
     <div class="eyebrow">Experiment ${String(exp.id).padStart(2,"0")} of 10</div>
     <h2>${escapeHTML(exp.title)}</h2>
@@ -63,15 +65,29 @@ function renderExperiment() {
     </section>
     <section>
       <div class="toolbar"><h3 style="margin:0">Program / Code</h3><div class="toolbar-left">
+        ${canRunInBrowser ? '<button class="action primary" id="runBtn" type="button">Run in browser</button>' : ''}
         <button class="action primary" id="copyBtn" type="button">Copy code</button>
         <button class="action" id="downloadBtn" type="button">Download code</button>
       </div></div>
       <div class="codewrap"><div class="codehead"><span>${escapeHTML(exp.language)}</span><span>${exp.code.split("\\n").length} lines</span></div><pre><code id="codeText">${escapeHTML(exp.code)}</code></pre></div>
+      ${canRunInBrowser ? `<div class="runner" id="runner" hidden><div class="runner-head"><h3>Live result</h3><button class="action" id="closeRunBtn" type="button">Close preview</button></div><iframe id="preview" title="${escapeHTML(exp.title)} preview" sandbox="allow-scripts allow-modals"></iframe></div>` : '<p class="note">This example needs its listed local runtime and cannot run directly in this browser preview.</p>'}
       <p class="status" id="status" role="status"></p>
       <p class="note">Copy uses the Clipboard API when available and falls back to a selectable code box if browser permissions block copying.</p>
     </section>`;
+  if (canRunInBrowser) {
+    document.getElementById("runBtn").addEventListener("click", runCode);
+    document.getElementById("closeRunBtn").addEventListener("click", () => {
+      document.getElementById("runner").hidden = true;
+      document.getElementById("preview").srcdoc = "";
+    });
+  }
   document.getElementById("copyBtn").addEventListener("click", copyCode);
   document.getElementById("downloadBtn").addEventListener("click", downloadCode);
+}
+function runCode() {
+  const exp = experiments.find(item => item.id === current);
+  document.getElementById("runner").hidden = false;
+  document.getElementById("preview").srcdoc = exp.code;
 }
 async function copyCode() {
   const exp = experiments.find(item => item.id === current);
